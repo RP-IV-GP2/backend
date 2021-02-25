@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import com.example.auth.service.UserService;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -65,6 +67,18 @@ public class TokenProvider {
 			return bearerToken.substring(7, bearerToken.length());
 		}
 		return null;
+	}
+
+	public boolean validateToken(String token) {
+		try {
+			Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+			if (claims.getBody().getExpiration().before(new Date())) {
+				return false;
+			}
+			return true;
+		} catch (JwtException | IllegalArgumentException e) {
+			return false;
+		}
 	}
 
 }
