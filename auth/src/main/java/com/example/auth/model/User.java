@@ -1,27 +1,16 @@
 package com.example.auth.model;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import org.springframework.security.access.method.P;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 @Entity
-@Table(name = "users")
-public class User implements UserDetails {
+@Table(name = "user")
+
+public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,73 +19,24 @@ public class User implements UserDetails {
 	@Column(name = "user_name", unique = true)
 	private String userName;
 
+	@Column(name = "email")
+	private String email;
+
 	@Column(name = "password")
 	private String password;
 
-	@Column(name = "accontNonExpired")
-	private Boolean accontNonExpired;
-
-	@Column(name = "accontNonLocked")
-	private Boolean accontNonLocked;
-
-	@Column(name = "credentialsNonExpired")
-	private Boolean credentialsNonExpired;
-
-	@Column(name = "enabled")
-	private Boolean enabled;
-
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "user_permission", joinColumns = { @JoinColumn(name = "id_user") },
-	inverseJoinColumns = {@JoinColumn(name = "id_permissions") })
-
-	private List<Permission> permissions;
+	private String token;
 
 	public User() {
 
 	}
 
-	public User(Long id, String userName, String password) {
+	public User(Long id, String userName, String email, String password, String token) {
 		this.id = id;
 		this.userName = userName;
+		this.email = email;
 		this.password = password;
-	}
-
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return this.permissions;
-	}
-	
-	public List<String> getRoles(){
-		List<String> roles = new ArrayList<>();
-		this.permissions.stream().forEach(p -> {
-			roles.add(p.getDescription());
-		});
-		return null;
-	}
-
-	@Override
-	public String getUsername() {
-		return this.userName;
-	}
-
-	@Override
-	public boolean isAccountNonExpired() {
-		return this.isAccountNonExpired();
-	}
-
-	@Override
-	public boolean isAccountNonLocked() {
-		return this.isAccountNonLocked();
-	}
-
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return this.isCredentialsNonExpired();
-	}
-
-	@Override
-	public boolean isEnabled() {
-		return this.enabled;
+		this.token = token;
 	}
 
 	public Long getId() {
@@ -115,12 +55,28 @@ public class User implements UserDetails {
 		this.userName = userName;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public String getPassword() {
 		return password;
 	}
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 }
