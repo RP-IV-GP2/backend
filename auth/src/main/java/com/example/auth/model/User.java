@@ -13,6 +13,7 @@ import javax.persistence.Table;
 public class User {
 
 	@Id
+	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
@@ -37,6 +38,12 @@ public class User {
 		this.email = email;
 		this.password = password;
 		this.token = token;
+	}
+
+	public User(String nome, String email, String senha) {
+		this.userName = nome;
+		this.email = email;
+		this.password = senha;
 	}
 
 	public Long getId() {

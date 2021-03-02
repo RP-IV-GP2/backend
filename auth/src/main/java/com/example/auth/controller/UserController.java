@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.auth.dto.AuthenticateDTO;
+import com.example.auth.dto.UserRegistryDTO;
 import com.example.auth.model.User;
 import com.example.auth.service.UserService;
 
@@ -28,9 +30,9 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public ResponseEntity<UserAutheticatedDTO> registrate(@RequestBody UserRegistrationDTO userRegistrationDTO){
+    public ResponseEntity<AuthenticateDTO> registrate(@RequestBody UserRegistryDTO userRegistrationDTO){
         User user = userService.registrate(userRegistrationDTO.toUser());
-        return  new ResponseEntity<UserAutheticatedDTO>(UserAutheticatedDTO.toDTO(user, "Bearer "), HttpStatus.CREATED);
+        return  new ResponseEntity<AuthenticateDTO>(AuthenticateDTO.toDTO(user, "Bearer "), HttpStatus.CREATED);
     }
 
 }
